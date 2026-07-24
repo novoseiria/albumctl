@@ -1,0 +1,16 @@
+[package]
+name    = "albumctl"
+version = "0.1.0"
+authors = ["Nile Jocson <novoseiria@gmail.com>"]
+edition = "2024"
+
+readme  = "README.md"
+license = "MPL-2.0"
+
+documentation = "https://novoseiria.github.io/albumctl"
+homepage      = "https://novoseiria.github.io/albumctl"
+repository    = "https://github.com/novoseiria/albumctl"
+
+
+
+[dependencies]
