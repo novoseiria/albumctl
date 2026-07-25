@@ -5,6 +5,7 @@ mod album;
 mod config;
 mod cli;
 mod library;
+mod manifest;
 mod release;
 mod result;
 mod tracklist;

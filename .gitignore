@@ -15,6 +15,7 @@
 !/src/cli.rs
 !/src/config.rs
 !/src/library.rs
+!/src/manifest.rs
 !/src/release.rs
 !/src/result.rs
 !/src/tracklist.rs
