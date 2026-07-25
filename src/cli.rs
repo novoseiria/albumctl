@@ -11,7 +11,7 @@ use clap::{Parser, Subcommand};
 #[command(version, about)]
 pub struct Cli {
 	#[command(subcommand)]
-	command: Command
+	pub command: Command
 }
 
 #[derive(Debug, Subcommand)]
