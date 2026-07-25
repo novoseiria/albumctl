@@ -4,10 +4,11 @@
 mod album;
 mod config;
 mod cli;
-mod paths;
+mod filesystem;
 mod library;
 mod manifest;
 mod release;
+mod paths;
 mod result;
 mod tracklist;
 
