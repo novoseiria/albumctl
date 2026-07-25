@@ -4,6 +4,7 @@
 mod album;
 mod config;
 mod library;
+mod release;
 mod tracklist;
 
 

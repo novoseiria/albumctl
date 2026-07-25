@@ -10,8 +10,9 @@
 !/Cargo.toml
 
 !/src/
-!/src/album.rs
 !/src/main.rs
+!/src/album.rs
 !/src/config.rs
 !/src/library.rs
+!/src/release.rs
 !/src/tracklist.rs
