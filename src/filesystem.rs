@@ -13,10 +13,10 @@ use crate::result::Result;
 
 #[derive(Debug, Error)]
 pub enum FilesystemError {
-	#[error("Failed to ensure directory {path} exists")]
+	#[error("Failed to ensure directory at {path}")]
 	EnsureDir { path: PathBuf },
 
-	#[error("Failed to ensure file {path} exists")]
+	#[error("Failed to ensure file at {path}")]
 	EnsureFile { path: PathBuf }
 }
 
