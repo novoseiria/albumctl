@@ -22,7 +22,7 @@ pub enum ConfigError {
 
 #[derive(Debug, Deserialize)]
 pub struct ConfigManifest {
-	default_library: PathBuf
+	default_library: Option<PathBuf>
 }
 
 #[derive(Debug)]
