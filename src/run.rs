@@ -7,6 +7,7 @@ use thiserror::Error;
 
 use crate::cli::{Cli, Command};
 use crate::config::Config;
+use crate::library::Library;
 use crate::result::Result;
 
 
@@ -18,8 +19,15 @@ pub struct RunError;
 pub fn run() -> Result<(), RunError> {
 	let args = Cli::parse();
 
-	let config = Config::new()
-		.change_context(RunError)?;
+	let mut config = Config::new().change_context(RunError)?;
+
+	match args.command {
+		Command::Init { path, make_default } =>
+			Library::init(&path, make_default, &mut config)
+				.change_context(RunError)?,
+
+		_ => todo!()
+	}
 
 	Ok(())
 }
