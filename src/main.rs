@@ -6,6 +6,7 @@ mod config;
 mod cli;
 mod library;
 mod release;
+mod result;
 mod tracklist;
 
 use clap::Parser;

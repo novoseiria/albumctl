@@ -16,4 +16,5 @@
 !/src/config.rs
 !/src/library.rs
 !/src/release.rs
+!/src/result.rs
 !/src/tracklist.rs
