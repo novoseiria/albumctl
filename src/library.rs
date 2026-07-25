@@ -38,6 +38,15 @@ impl Library {
 		ensure_empty_dir(path).change_context_lazy(error)?;
 		ensure_file(&manifest_path).change_context_lazy(error)?;
 
+		if make_default {
+			let canonical = path.canonicalize()
+				.change_context_lazy(error)
+				.attach_with(|| format!("while resolving {}", path.display()))?;
+
+			config.set_default_library(Some(&canonical));
+			config.save().change_context_lazy(error)?;
+		}
+
 		Ok(())
 	}
 }
