@@ -13,7 +13,7 @@ use crate::result::Result;
 
 #[derive(Debug, Error)]
 pub enum PathsError {
-	#[error("Could not retrieve albumctl file and directory paths")]
+	#[error("Could not resolve albumctl file and directory paths")]
 	ResolvePaths
 }
 

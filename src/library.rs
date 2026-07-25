@@ -15,7 +15,7 @@ use crate::result::Result;
 
 #[derive(Debug, Error)]
 pub enum LibraryError {
-	#[error("Failed to initialize library at {path}")]
+	#[error("Failed to initialize music library {path}")]
 	InitLibrary { path: PathBuf }
 }
 
