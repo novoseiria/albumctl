@@ -4,7 +4,7 @@
 use std::path::PathBuf;
 
 use error_stack::ResultExt;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use crate::filesystem::{ensure_dir, ensure_file};
@@ -20,7 +20,7 @@ pub enum ConfigError {
 	OpenConfig
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct ConfigManifest {
 	default_library: Option<PathBuf>
 }
