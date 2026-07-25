@@ -12,6 +12,7 @@
 !/src/
 !/src/main.rs
 !/src/album.rs
+!/src/cli.rs
 !/src/config.rs
 !/src/library.rs
 !/src/release.rs

@@ -3,12 +3,19 @@
 
 mod album;
 mod config;
+mod cli;
 mod library;
 mod release;
 mod tracklist;
 
+use clap::Parser;
+
+use crate::cli::Cli;
+
 
 
 fn main() {
-	println!("Hello, world!")
+	let args = Cli::parse();
+
+	eprintln!("{args:?}");
 }
