@@ -23,10 +23,26 @@ pub enum Command {
 		make_default: bool
 	},
 	Album {
-		path: PathBuf,
-		library: Option<PathBuf>
+		#[command(subcommand)]
+		command: AlbumCommand
 	},
 	Release {
+		#[command(subcommand)]
+		command: ReleaseCommand
+	}
+}
+
+#[derive(Debug, Subcommand)]
+pub enum AlbumCommand {
+	Add {
+		path: PathBuf,
+		library: Option<PathBuf>
+	}
+}
+
+#[derive(Debug, Subcommand)]
+pub enum ReleaseCommand {
+	Add {
 		path: PathBuf,
 		library: Option<PathBuf>
 	}
