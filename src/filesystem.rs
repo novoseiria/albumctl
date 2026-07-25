@@ -64,7 +64,7 @@ pub fn ensure_file(path: &Path) -> Result<(), FilesystemError> {
 
 	if path.exists() && !path.is_file() {
 		Err(error()).attach_with(
-			|| format!("{} exists but is not a file",path.display())
+			|| format!("{} exists but is not a file", path.display())
 		)?;
 	}
 
