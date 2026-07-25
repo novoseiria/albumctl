@@ -14,7 +14,7 @@ use crate::result::Result;
 #[derive(Debug, Error)]
 pub enum PathsError {
 	#[error("Could not retrieve albumctl file and directory paths")]
-	PathsNew
+	ResolvePaths
 }
 
 #[derive(Debug)]
@@ -26,7 +26,7 @@ pub struct Paths {
 impl Paths {
 	pub fn new() -> Result<Paths, PathsError> {
 		let project_dirs = ProjectDirs::from("com", "novoseiria", "albumctl")
-			.ok_or(PathsError::PathsNew)
+			.ok_or(PathsError::ResolvePaths)
 			.attach("could not retrieve the user's home directory")?;
 
 		let config_dir = project_dirs.config_dir().to_path_buf();

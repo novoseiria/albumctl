@@ -17,7 +17,7 @@ use crate::paths::Paths;
 #[derive(Debug, Error)]
 pub enum ConfigError {
 	#[error("Failed to open albumctl config")]
-	ConfigNew
+	OpenConfig
 }
 
 #[derive(Debug, Deserialize)]
@@ -33,16 +33,16 @@ pub struct Config {
 impl Config {
 	pub fn new() -> Result<Config, ConfigError> {
 		let paths = Paths::new()
-			.change_context(ConfigError::ConfigNew)?;
+			.change_context(ConfigError::OpenConfig)?;
 
 		ensure_dir(&paths.config_dir)
-			.change_context(ConfigError::ConfigNew)?;
+			.change_context(ConfigError::OpenConfig)?;
 
 		ensure_file(&paths.config_manifest)
-			.change_context(ConfigError::ConfigNew)?;
+			.change_context(ConfigError::OpenConfig)?;
 
 		let manifest = load_manifest::<ConfigManifest>(&paths.config_manifest)
-			.change_context(ConfigError::ConfigNew)?;
+			.change_context(ConfigError::OpenConfig)?;
 
 		Ok(Config { manifest })
 	}
