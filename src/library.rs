@@ -6,6 +6,6 @@ use serde::Deserialize;
 
 
 #[derive(Debug, Deserialize)]
-struct ConfigManifest {
+struct LibraryManifest {
 
 }
