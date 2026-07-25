@@ -27,11 +27,9 @@ pub fn ensure_dir(path: &Path) -> Result<(), FilesystemError> {
 	let error = || FilesystemError::EnsureDir { path: path.to_path_buf() };
 
 	if path.exists() && !path.is_dir() {
-		Err(error())
-			.attach_with(|| format!(
-				"{} exists but is not a directory",
-				path.display()
-			))?;
+		Err(error()).attach_with(
+			|| format!("{} exists but is not a directory",path.display())
+		)?;
 	}
 
 	fs::create_dir_all(path)
@@ -65,11 +63,9 @@ pub fn ensure_file(path: &Path) -> Result<(), FilesystemError> {
 	let error = || FilesystemError::EnsureFile { path: path.to_path_buf() };
 
 	if path.exists() && !path.is_file() {
-		Err(error())
-			.attach_with(|| format!(
-				"{} exists but is not a file",
-				path.display()
-			))?;
+		Err(error()).attach_with(
+			|| format!("{} exists but is not a file",path.display())
+		)?;
 	}
 
 	OpenOptions::new()

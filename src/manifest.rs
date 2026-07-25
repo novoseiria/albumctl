@@ -22,7 +22,8 @@ pub enum ManifestError {
 	SaveManifest { path: PathBuf }
 }
 
-pub fn load_manifest<T: DeserializeOwned>(path: &Path) -> Result<T, ManifestError> {
+pub fn load_manifest<T: DeserializeOwned>(path: &Path)
+	-> Result<T, ManifestError> {
 	let error = || ManifestError::LoadManifest { path: path.to_path_buf() };
 
 	let data = fs::read_to_string(&path)
