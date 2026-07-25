@@ -4,6 +4,7 @@
 mod album;
 mod config;
 mod cli;
+mod paths;
 mod library;
 mod manifest;
 mod release;
