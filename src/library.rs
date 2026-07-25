@@ -1,10 +1,11 @@
 // SPDX-FileCopyrightText: Copyright (C) Nile Jocson <novoseiria@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
 
-mod library;
+use serde::Deserialize;
 
 
 
-fn main() {
-	println!("Hello, world!")
+#[derive(Debug, Deserialize)]
+struct ConfigManifest {
+
 }
