@@ -19,5 +19,6 @@
 !/src/manifest.rs
 !/src/paths.rs
 !/src/release.rs
+!/src/run.rs
 !/src/result.rs
 !/src/tracklist.rs

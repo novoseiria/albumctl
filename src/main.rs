@@ -8,18 +8,27 @@ mod filesystem;
 mod library;
 mod manifest;
 mod release;
+mod run;
 mod paths;
 mod result;
 mod tracklist;
 
-use clap::Parser;
+use std::process::ExitCode;
 
-use crate::cli::Cli;
+use error_stack::{fmt::ColorMode, Report};
+
+use crate::run::run;
 
 
 
-fn main() {
-	let args = Cli::parse();
+fn main() -> ExitCode {
+	Report::set_color_mode(ColorMode::Color);
 
-	eprintln!("{args:?}");
+	if let Err(e) = run() {
+		eprintln!("{e:?}");
+		ExitCode::FAILURE
+	}
+	else {
+		ExitCode::SUCCESS
+	}
 }
