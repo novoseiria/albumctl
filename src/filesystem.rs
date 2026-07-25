@@ -44,6 +44,8 @@ pub fn ensure_dir(path: &Path) -> Result<(), FilesystemError> {
 pub fn ensure_empty_dir(path: &Path) -> Result<(), FilesystemError> {
 	let error = || FilesystemError::EnsureEmptyDir { path: path.to_path_buf() };
 
+	ensure_dir(path)?;
+
 	let mut entries = path.read_dir()
 		.change_context_lazy(error)
 		.attach_with(|| format!("while reading {}", path.display()))?;
