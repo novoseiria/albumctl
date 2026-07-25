@@ -16,6 +16,9 @@ pub enum FilesystemError {
 	#[error("Failed to ensure directory at {path}")]
 	EnsureDir { path: PathBuf },
 
+	#[error("Failed to ensure empty directory at {path}")]
+	EnsureEmptyDir { path: PathBuf },
+
 	#[error("Failed to ensure file at {path}")]
 	EnsureFile { path: PathBuf }
 }
@@ -34,6 +37,24 @@ pub fn ensure_dir(path: &Path) -> Result<(), FilesystemError> {
 	fs::create_dir_all(path)
 		.change_context_lazy(error)
 		.attach_with(|| format!("while creating {}", path.display()))?;
+
+	Ok(())
+}
+
+pub fn ensure_empty_dir(path: &Path) -> Result<(), FilesystemError> {
+	let error = || FilesystemError::EnsureEmptyDir { path: path.to_path_buf() };
+
+	let mut entries = path.read_dir()
+		.change_context_lazy(error)
+		.attach_with(|| format!("while reading {}", path.display()))?;
+
+	if let Some(entry) = entries.next() {
+		entry.change_context_lazy(error)
+			.attach_with(|| format!("while reading {}", path.display()))?;
+
+		Err(error())
+			.attach_with(|| format!("{} is not empty", path.display()))?;
+	}
 
 	Ok(())
 }
