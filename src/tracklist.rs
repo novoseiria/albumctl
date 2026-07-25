@@ -6,11 +6,11 @@ use serde::Deserialize;
 
 
 #[derive(Debug, Deserialize)]
-struct Disc {
+pub struct Disc {
 	tracks: Vec<Track>
 }
 
 #[derive(Debug, Deserialize)]
-struct Track {
+pub struct Track {
 	title: String
 }

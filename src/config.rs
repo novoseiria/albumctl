@@ -8,6 +8,6 @@ use serde::Deserialize;
 
 
 #[derive(Debug, Deserialize)]
-struct ConfigManifest {
+pub struct ConfigManifest {
 	default_library: PathBuf
 }
