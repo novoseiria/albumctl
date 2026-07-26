@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: Copyright (C) Nile Jocson <novoseiria@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
 
+use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use std::fs::{self, OpenOptions};
 
@@ -19,8 +20,11 @@ pub enum FilesystemError {
 	#[error("Failed to ensure empty directory {path}")]
 	EnsureEmptyDir { path: PathBuf },
 
-	#[error("Failed to ensure file {path}")]
-	EnsureFile { path: PathBuf }
+	#[error("Failed to ensure file with content {path}")]
+	EnsureFile { path: PathBuf },
+
+	#[error("Failed to ensure file with content {path}")]
+	EnsureFileWithContent { path: PathBuf }
 }
 
 pub fn ensure_dir(path: &Path) -> Result<(), FilesystemError> {
@@ -59,8 +63,11 @@ pub fn ensure_empty_dir(path: &Path) -> Result<(), FilesystemError> {
 	Ok(())
 }
 
-pub fn ensure_file(path: &Path) -> Result<(), FilesystemError> {
+pub fn ensure_file_with_content(path: &Path, content: Option<&str>)
+	-> Result<(), FilesystemError> {
 	let error = || FilesystemError::EnsureFile { path: path.to_path_buf() };
+	let write_error =
+		|| FilesystemError::EnsureFileWithContent { path: path.to_path_buf() };
 
 	if path.exists() && !path.is_file() {
 		Err(error()).attach_with(
@@ -68,12 +75,31 @@ pub fn ensure_file(path: &Path) -> Result<(), FilesystemError> {
 		)?;
 	}
 
-	OpenOptions::new()
+	let mut result = OpenOptions::new()
 		.write(true)
-		.create(true)
-		.open(path)
-		.change_context_lazy(error)
-		.attach_with(|| format!("while opening {}", path.display()))?;
+		.create_new(true)
+		.open(path);
+
+	match &mut result {
+		Err(e) if e.kind() != io::ErrorKind::AlreadyExists => {
+			result.change_context_lazy(error)
+				.attach_with(
+					|| format!("while opening {}", path.display())
+				)?;
+		}
+
+		Ok(file) if let Some(content) = content => {
+			file.write_all(content.as_bytes())
+				.change_context_lazy(write_error)
+				.attach_with(|| format!("while writing {}", path.display()))?;
+		}
+
+		_ => {}
+	}
 
 	Ok(())
+}
+
+pub fn ensure_file(path: &Path) -> Result<(), FilesystemError> {
+	ensure_file_with_content(path, None)
 }
