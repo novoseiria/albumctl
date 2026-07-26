@@ -8,7 +8,7 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::Config;
-use crate::filesystem::{ensure_empty_dir, ensure_file_with_content, require_dir, require_file};
+use crate::filesystem::{ensure_empty_dir, ensure_file_with_content, require_dir};
 use crate::manifest::load_manifest;
 use crate::result::Result;
 use crate::templates;
@@ -68,7 +68,6 @@ impl Library {
 			path: path.to_path_buf(),
 		};
 		require_dir(path).change_context_lazy(error)?;
-		require_file(&manifest_path).change_context_lazy(error)?;
 
 		let manifest = load_manifest(&manifest_path).change_context_lazy(error)?;
 

@@ -7,7 +7,6 @@ use error_stack::ResultExt;
 use serde::Deserialize;
 use thiserror::Error;
 
-use crate::filesystem::require_file;
 use crate::manifest::load_manifest;
 use crate::result::Result;
 use crate::tracklist::Disc;
@@ -38,7 +37,6 @@ impl Album {
 			path: path.to_path_buf(),
 		};
 
-		require_file(path).change_context_lazy(error)?;
 		let manifest = load_manifest(path).change_context_lazy(error)?;
 
 		Ok(Album { manifest })

@@ -9,6 +9,7 @@ use serde::Serialize;
 use serde::de::DeserializeOwned;
 use thiserror::Error;
 
+use crate::filesystem::require_file;
 use crate::result::Result;
 
 #[derive(Debug, Error)]
@@ -25,6 +26,8 @@ pub fn load_manifest<T: DeserializeOwned>(path: &Path) -> Result<T, ManifestErro
 		path: path.to_path_buf(),
 	};
 
+	require_file(path).change_context_lazy(error)?;
+
 	let data = fs::read_to_string(&path)
 		.change_context_lazy(error)
 		.attach_with(|| format!("while reading from {}", path.display()))?;
@@ -40,6 +43,8 @@ pub fn save_manifest<T: Serialize>(manifest: &T, path: &Path) -> Result<(), Mani
 	let error = || ManifestError::SaveManifest {
 		path: path.to_path_buf(),
 	};
+
+	require_file(path).change_context_lazy(error)?;
 
 	let data = toml::to_string_pretty(manifest)
 		.change_context_lazy(error)
