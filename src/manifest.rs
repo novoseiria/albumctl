@@ -14,7 +14,7 @@ use crate::result::Result;
 
 #[derive(Debug, Error)]
 pub enum ManifestError {
-	#[error("Failed to load manifest from {path}")]
+	#[error("Failed to load manifest {path}")]
 	LoadManifest { path: PathBuf },
 
 	#[error("Failed to save manifest to {path}")]
@@ -30,11 +30,11 @@ pub fn load_manifest<T: DeserializeOwned>(path: &Path) -> Result<T, ManifestErro
 
 	let data = fs::read_to_string(&path)
 		.change_context_lazy(error)
-		.attach_with(|| format!("while reading from {}", path.display()))?;
+		.attach_with(|| format!("while reading {}", path.display()))?;
 
 	let manifest = toml::from_str(&data)
 		.change_context_lazy(error)
-		.attach_with(|| format!("while parsing from {}", path.display()))?;
+		.attach_with(|| format!("while parsing {}", path.display()))?;
 
 	Ok(manifest)
 }

@@ -97,12 +97,12 @@ pub fn ensure_empty_dir(path: &Path) -> Result<(), FilesystemError> {
 	let mut entries = path
 		.read_dir()
 		.change_context_lazy(error)
-		.attach_with(|| format!("while reading from {}", path.display()))?;
+		.attach_with(|| format!("while reading {}", path.display()))?;
 
 	if let Some(entry) = entries.next() {
 		entry
 			.change_context_lazy(error)
-			.attach_with(|| format!("while reading from {}", path.display()))?;
+			.attach_with(|| format!("while reading {}", path.display()))?;
 
 		Err(error()).attach_with(|| format!("{} is not empty", path.display()))?;
 	}

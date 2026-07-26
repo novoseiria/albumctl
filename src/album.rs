@@ -13,7 +13,7 @@ use crate::tracklist::Disc;
 
 #[derive(Debug, Error)]
 pub enum AlbumError {
-	#[error("Failed to load album at {path}")]
+	#[error("Failed to load album from {path}")]
 	LoadAlbum { path: PathBuf },
 }
 
