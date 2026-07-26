@@ -22,3 +22,11 @@
 !/src/run.rs
 !/src/result.rs
 !/src/tracklist.rs
+
+!/src/templates/
+!/src/templates/LICENSE
+!/src/templates/album.toml
+!/src/templates/config.toml
+!/src/templates/library.toml
+!/src/templates/mapping.toml
+!/src/templates/release.toml
