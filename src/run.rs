@@ -5,7 +5,8 @@ use clap::Parser;
 use error_stack::ResultExt;
 use thiserror::Error;
 
-use crate::cli::{Cli, Command};
+use crate::album::Album;
+use crate::cli::{AlbumCommand, Cli, Command};
 use crate::config::Config;
 use crate::library::Library;
 use crate::result::Result;
@@ -21,7 +22,15 @@ pub fn run() -> Result<(), RunError> {
 
 	match args.command {
 		Command::Init { path, make_default } => {
-			Library::init(&path, make_default, &mut config).change_context(RunError)?
+			Library::init(&path, make_default, &mut config).change_context(RunError)?;
+		}
+
+		Command::Album {
+			command: AlbumCommand::Add { path, library },
+		} => {
+			let library = Library::open(library.as_deref(), &config).change_context(RunError)?;
+			let album = Album::load(&path).change_context(RunError)?;
+			library.add_album(&album).change_context(RunError)?;
 		}
 
 		_ => todo!(),

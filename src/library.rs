@@ -7,6 +7,7 @@ use error_stack::ResultExt;
 use serde::Deserialize;
 use thiserror::Error;
 
+use crate::album::Album;
 use crate::config::Config;
 use crate::filesystem::{ensure_empty_dir, ensure_file_with_content, require_dir};
 use crate::manifest::load_manifest;
@@ -23,6 +24,9 @@ pub enum LibraryError {
 
 	#[error("Failed to open music library at {path}")]
 	OpenLibrary { path: PathBuf },
+
+	#[error("Failed to add album to music library")]
+	AddAlbumError,
 }
 
 #[derive(Debug, Deserialize)]
@@ -72,5 +76,9 @@ impl Library {
 		let manifest = load_manifest(&manifest_path).change_context_lazy(error)?;
 
 		Ok(Library { manifest })
+	}
+
+	pub fn add_album(&self, album: &Album) -> Result<(), LibraryError> {
+		Ok(())
 	}
 }
