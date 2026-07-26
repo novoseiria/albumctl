@@ -11,6 +11,7 @@ mod release;
 mod run;
 mod paths;
 mod result;
+mod templates;
 mod tracklist;
 
 use std::process::ExitCode;

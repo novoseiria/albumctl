@@ -21,6 +21,7 @@
 !/src/release.rs
 !/src/run.rs
 !/src/result.rs
+!/src/templates.rs
 !/src/tracklist.rs
 
 !/src/templates/
