@@ -20,16 +20,16 @@ pub enum FilesystemError {
 	#[error("{path} is not a directory")]
 	RequireDir { path: PathBuf },
 
-	#[error("Failed to ensure directory {path}")]
+	#[error("Failed to ensure a directory exists at {path}")]
 	EnsureDir { path: PathBuf },
 
-	#[error("Failed to ensure empty directory {path}")]
+	#[error("Failed to ensure an empty directory exists at {path}")]
 	EnsureEmptyDir { path: PathBuf },
 
-	#[error("Failed to ensure file {path}")]
+	#[error("Failed to ensure a file exists at {path}")]
 	EnsureFile { path: PathBuf },
 
-	#[error("Failed to ensure file with content {path}")]
+	#[error("Failed to ensure a file with content exists at {path}")]
 	EnsureFileWithContent { path: PathBuf }
 }
 
@@ -58,7 +58,7 @@ pub fn ensure_dir(path: &Path) -> Result<(), FilesystemError> {
 
 	if path.exists() && !path.is_dir() {
 		Err(error()).attach_with(
-			|| format!("{} exists but is not a directory",path.display())
+			|| format!("{} exists but is not a directory", path.display())
 		)?;
 	}
 
@@ -76,11 +76,11 @@ pub fn ensure_empty_dir(path: &Path) -> Result<(), FilesystemError> {
 
 	let mut entries = path.read_dir()
 		.change_context_lazy(error)
-		.attach_with(|| format!("while reading {}", path.display()))?;
+		.attach_with(|| format!("while reading from {}", path.display()))?;
 
 	if let Some(entry) = entries.next() {
 		entry.change_context_lazy(error)
-			.attach_with(|| format!("while reading {}", path.display()))?;
+			.attach_with(|| format!("while reading from {}", path.display()))?;
 
 		Err(error())
 			.attach_with(|| format!("{} is not empty", path.display()))?;
@@ -117,7 +117,9 @@ pub fn ensure_file_with_content(path: &Path, content: Option<&str>)
 		Ok(file) if let Some(content) = content => {
 			file.write_all(content.as_bytes())
 				.change_context_lazy(write_error)
-				.attach_with(|| format!("while writing {}", path.display()))?;
+				.attach_with(
+					|| format!("while writing to {}", path.display())
+				)?;
 		}
 
 		_ => {}

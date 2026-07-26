@@ -16,7 +16,7 @@ use crate::templates;
 
 #[derive(Debug, Error)]
 pub enum LibraryError {
-	#[error("Failed to initialize music library {path}")]
+	#[error("Failed to initialize music library at {path}")]
 	InitLibrary { path: PathBuf }
 }
 
