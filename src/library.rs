@@ -8,8 +8,9 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::Config;
-use crate::filesystem::{ensure_empty_dir, ensure_file};
+use crate::filesystem::{ensure_empty_dir, ensure_file, ensure_file_with_content};
 use crate::result::Result;
+use crate::templates;
 
 
 
@@ -36,7 +37,8 @@ impl Library {
 		let manifest_path = path.join("library.toml");
 
 		ensure_empty_dir(path).change_context_lazy(error)?;
-		ensure_file(&manifest_path).change_context_lazy(error)?;
+		ensure_file_with_content(&manifest_path, Some(templates::LIBRARY))
+			.change_context_lazy(error)?;
 
 		if make_default {
 			let canonical = path.canonicalize()

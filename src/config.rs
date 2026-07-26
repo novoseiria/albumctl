@@ -7,10 +7,11 @@ use error_stack::ResultExt;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::filesystem::{ensure_dir, ensure_file};
+use crate::filesystem::{ensure_dir, ensure_file, ensure_file_with_content};
 use crate::manifest::{load_manifest, save_manifest};
 use crate::result::Result;
 use crate::paths::Paths;
+use crate::templates;
 
 
 
@@ -41,7 +42,7 @@ impl Config {
 		ensure_dir(&paths.config_dir)
 			.change_context(ConfigError::OpenConfig)?;
 
-		ensure_file(&paths.config_manifest)
+		ensure_file_with_content(&paths.config_manifest, Some(templates::CONFIG))
 			.change_context(ConfigError::OpenConfig)?;
 
 		let manifest = load_manifest::<ConfigManifest>(&paths.config_manifest)
