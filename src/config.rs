@@ -64,4 +64,8 @@ impl Config {
 	pub fn set_default_library(&mut self, path: Option<&Path>) {
 		self.manifest.default_library = path.map(PathBuf::from);
 	}
+
+	pub fn default_library(&self) -> Option<&Path> {
+		self.manifest.default_library.as_deref()
+	}
 }
