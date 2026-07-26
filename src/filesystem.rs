@@ -20,6 +20,9 @@ pub enum FilesystemError {
 	#[error("{path} is not a directory")]
 	RequireDir { path: PathBuf },
 
+	#[error("{path} is not a file")]
+	RequireFile { path: PathBuf },
+
 	#[error("Failed to ensure a directory exists at {path}")]
 	EnsureDir { path: PathBuf },
 
@@ -47,6 +50,17 @@ pub fn require_dir(path: &Path) -> Result<(), FilesystemError> {
 
 	let error = || FilesystemError::RequireDir { path: path.to_path_buf() };
 	if !path.is_dir() {
+		Err(error())?;
+	}
+
+	Ok(())
+}
+
+pub fn require_fiile(path: &Path) -> Result<(), FilesystemError> {
+	require_exists(path)?;
+
+	let error = || FilesystemError::RequireFile { path: path.to_path_buf() };
+	if !path.is_file() {
 		Err(error())?;
 	}
 
