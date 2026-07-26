@@ -58,7 +58,7 @@ pub fn require_dir(path: &Path) -> Result<(), FilesystemError> {
 	Ok(())
 }
 
-pub fn require_fiile(path: &Path) -> Result<(), FilesystemError> {
+pub fn require_file(path: &Path) -> Result<(), FilesystemError> {
 	require_exists(path)?;
 
 	let error = || FilesystemError::RequireFile {
