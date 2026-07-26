@@ -10,7 +10,7 @@ use thiserror::Error;
 use crate::filesystem::{ensure_dir, ensure_file};
 use crate::manifest::{load_manifest, save_manifest};
 use crate::result::Result;
-use crate::paths::{self, Paths};
+use crate::paths::Paths;
 
 
 
