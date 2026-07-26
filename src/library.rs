@@ -34,6 +34,7 @@ pub struct LibraryManifest {}
 
 #[derive(Debug)]
 pub struct Library {
+	path: PathBuf,
 	manifest: LibraryManifest,
 }
 
@@ -75,7 +76,7 @@ impl Library {
 
 		let manifest = load_manifest(&manifest_path).change_context_lazy(error)?;
 
-		Ok(Library { manifest })
+		Ok(Library { path: path.to_path_buf(), manifest })
 	}
 
 	pub fn add_album(&self, album: &Album) -> Result<(), LibraryError> {

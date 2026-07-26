@@ -28,6 +28,7 @@ pub struct AlbumManifest {
 
 #[derive(Debug)]
 pub struct Album {
+	path: PathBuf,
 	manifest: AlbumManifest,
 }
 
@@ -39,6 +40,6 @@ impl Album {
 
 		let manifest = load_manifest(path).change_context_lazy(error)?;
 
-		Ok(Album { manifest })
+		Ok(Album { path: path.to_path_buf(), manifest })
 	}
 }
