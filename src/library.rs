@@ -8,7 +8,8 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::Config;
-use crate::filesystem::{ensure_empty_dir, ensure_file_with_content};
+use crate::filesystem::{ensure_empty_dir, ensure_file_with_content, require_dir, require_fiile};
+use crate::manifest::load_manifest;
 use crate::result::Result;
 use crate::templates;
 
@@ -17,7 +18,13 @@ use crate::templates;
 #[derive(Debug, Error)]
 pub enum LibraryError {
 	#[error("Failed to initialize music library at {path}")]
-	InitLibrary { path: PathBuf }
+	InitLibrary { path: PathBuf },
+
+	#[error("No default music library is set")]
+	NoDefaultLibrary,
+
+	#[error("Failed to open music library at {path}")]
+	OpenLibrary { path: PathBuf }
 }
 
 #[derive(Debug, Deserialize)]
@@ -50,5 +57,22 @@ impl Library {
 		}
 
 		Ok(())
+	}
+
+	pub fn open(path: Option<&Path>, config: &Config)
+		-> Result<Library, LibraryError> {
+		let path = path.or(config.default_library())
+			.ok_or(LibraryError::NoDefaultLibrary)?;
+
+		let manifest_path = path.join("library.toml");
+
+		let error = || LibraryError::OpenLibrary { path: path.to_path_buf() };
+		require_dir(path).change_context_lazy(error)?;
+		require_fiile(&manifest_path).change_context_lazy(error)?;
+
+		let manifest = load_manifest(&manifest_path)
+			.change_context_lazy(error)?;
+
+		Ok(Library { manifest })
 	}
 }
