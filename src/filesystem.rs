@@ -14,17 +14,43 @@ use crate::result::Result;
 
 #[derive(Debug, Error)]
 pub enum FilesystemError {
+	#[error("{path} does not exist")]
+	RequireExists { path: PathBuf },
+
+	#[error("{path} is not a directory")]
+	RequireDir { path: PathBuf },
+
 	#[error("Failed to ensure directory {path}")]
 	EnsureDir { path: PathBuf },
 
 	#[error("Failed to ensure empty directory {path}")]
 	EnsureEmptyDir { path: PathBuf },
 
-	#[error("Failed to ensure file with content {path}")]
+	#[error("Failed to ensure file {path}")]
 	EnsureFile { path: PathBuf },
 
 	#[error("Failed to ensure file with content {path}")]
 	EnsureFileWithContent { path: PathBuf }
+}
+
+pub fn require_exists(path: &Path) -> Result<(), FilesystemError> {
+	let error = || FilesystemError::RequireExists { path: path.to_path_buf() };
+	if !path.exists() {
+		Err(error())?;
+	}
+
+	Ok(())
+}
+
+pub fn require_dir(path: &Path) -> Result<(), FilesystemError> {
+	require_exists(path)?;
+
+	let error = || FilesystemError::RequireDir { path: path.to_path_buf() };
+	if !path.is_dir() {
+		Err(error())?;
+	}
+
+	Ok(())
 }
 
 pub fn ensure_dir(path: &Path) -> Result<(), FilesystemError> {
