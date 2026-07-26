@@ -11,20 +11,19 @@ use thiserror::Error;
 
 use crate::result::Result;
 
-
-
 #[derive(Debug, Error)]
 pub enum ManifestError {
 	#[error("Failed to load manifest from {path}")]
 	LoadManifest { path: PathBuf },
 
 	#[error("Failed to save manifest to {path}")]
-	SaveManifest { path: PathBuf }
+	SaveManifest { path: PathBuf },
 }
 
-pub fn load_manifest<T: DeserializeOwned>(path: &Path)
-	-> Result<T, ManifestError> {
-	let error = || ManifestError::LoadManifest { path: path.to_path_buf() };
+pub fn load_manifest<T: DeserializeOwned>(path: &Path) -> Result<T, ManifestError> {
+	let error = || ManifestError::LoadManifest {
+		path: path.to_path_buf(),
+	};
 
 	let data = fs::read_to_string(&path)
 		.change_context_lazy(error)
@@ -37,9 +36,10 @@ pub fn load_manifest<T: DeserializeOwned>(path: &Path)
 	Ok(manifest)
 }
 
-pub fn save_manifest<T: Serialize>(manifest: &T, path: &Path)
-	-> Result<(), ManifestError> {
-	let error = || ManifestError::SaveManifest { path: path.to_path_buf() };
+pub fn save_manifest<T: Serialize>(manifest: &T, path: &Path) -> Result<(), ManifestError> {
+	let error = || ManifestError::SaveManifest {
+		path: path.to_path_buf(),
+	};
 
 	let data = toml::to_string_pretty(manifest)
 		.change_context_lazy(error)

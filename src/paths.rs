@@ -9,18 +9,16 @@ use thiserror::Error;
 
 use crate::result::Result;
 
-
-
 #[derive(Debug, Error)]
 pub enum PathsError {
 	#[error("Could not resolve albumctl file and directory paths")]
-	ResolvePaths
+	ResolvePaths,
 }
 
 #[derive(Debug)]
 pub struct Paths {
 	pub config_dir: PathBuf,
-	pub config_manifest: PathBuf
+	pub config_manifest: PathBuf,
 }
 
 impl Paths {
@@ -32,6 +30,9 @@ impl Paths {
 		let config_dir = project_dirs.config_dir().to_path_buf();
 		let config_manifest = config_dir.join("config.toml");
 
-		Ok(Paths { config_dir, config_manifest })
+		Ok(Paths {
+			config_dir,
+			config_manifest,
+		})
 	}
 }

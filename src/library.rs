@@ -13,8 +13,6 @@ use crate::manifest::load_manifest;
 use crate::result::Result;
 use crate::templates;
 
-
-
 #[derive(Debug, Error)]
 pub enum LibraryError {
 	#[error("Failed to initialize music library at {path}")]
@@ -24,23 +22,22 @@ pub enum LibraryError {
 	NoDefaultLibrary,
 
 	#[error("Failed to open music library at {path}")]
-	OpenLibrary { path: PathBuf }
+	OpenLibrary { path: PathBuf },
 }
 
 #[derive(Debug, Deserialize)]
-pub struct LibraryManifest {
-
-}
+pub struct LibraryManifest {}
 
 #[derive(Debug)]
 pub struct Library {
-	manifest: LibraryManifest
+	manifest: LibraryManifest,
 }
 
 impl Library {
-	pub fn init(path: &Path, make_default: bool, config: &mut Config)
-		-> Result<(), LibraryError> {
-		let error = || LibraryError::InitLibrary { path: path.to_path_buf() };
+	pub fn init(path: &Path, make_default: bool, config: &mut Config) -> Result<(), LibraryError> {
+		let error = || LibraryError::InitLibrary {
+			path: path.to_path_buf(),
+		};
 		let manifest_path = path.join("library.toml");
 
 		ensure_empty_dir(path).change_context_lazy(error)?;
@@ -48,7 +45,8 @@ impl Library {
 			.change_context_lazy(error)?;
 
 		if make_default {
-			let canonical = path.canonicalize()
+			let canonical = path
+				.canonicalize()
 				.change_context_lazy(error)
 				.attach_with(|| format!("while resolving {}", path.display()))?;
 
@@ -59,19 +57,20 @@ impl Library {
 		Ok(())
 	}
 
-	pub fn open(path: Option<&Path>, config: &Config)
-		-> Result<Library, LibraryError> {
-		let path = path.or(config.default_library())
+	pub fn open(path: Option<&Path>, config: &Config) -> Result<Library, LibraryError> {
+		let path = path
+			.or(config.default_library())
 			.ok_or(LibraryError::NoDefaultLibrary)?;
 
 		let manifest_path = path.join("library.toml");
 
-		let error = || LibraryError::OpenLibrary { path: path.to_path_buf() };
+		let error = || LibraryError::OpenLibrary {
+			path: path.to_path_buf(),
+		};
 		require_dir(path).change_context_lazy(error)?;
 		require_fiile(&manifest_path).change_context_lazy(error)?;
 
-		let manifest = load_manifest(&manifest_path)
-			.change_context_lazy(error)?;
+		let manifest = load_manifest(&manifest_path).change_context_lazy(error)?;
 
 		Ok(Library { manifest })
 	}

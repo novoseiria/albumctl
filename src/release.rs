@@ -5,8 +5,6 @@ use serde::Deserialize;
 
 use crate::tracklist::Disc;
 
-
-
 #[derive(Debug, Deserialize)]
 pub struct ReleaseManifest {
 	title: String,
@@ -20,12 +18,12 @@ pub struct ReleaseManifest {
 
 	parent: ParentAlbum,
 
-	discs: Vec<Disc>
+	discs: Vec<Disc>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct ParentAlbum {
 	title: String,
 	artist: String,
-	year: u16
+	year: u16,
 }

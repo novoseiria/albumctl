@@ -5,13 +5,11 @@ use serde::Deserialize;
 
 use crate::tracklist::Disc;
 
-
-
 #[derive(Debug, Deserialize)]
 pub struct AlbumManifest {
 	title: String,
 	artist: String,
 	year: u16,
 
-	discs: Vec<Disc>
+	discs: Vec<Disc>,
 }

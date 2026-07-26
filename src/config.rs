@@ -9,11 +9,9 @@ use thiserror::Error;
 
 use crate::filesystem::{ensure_dir, ensure_file_with_content};
 use crate::manifest::{load_manifest, save_manifest};
-use crate::result::Result;
 use crate::paths::Paths;
+use crate::result::Result;
 use crate::templates;
-
-
 
 #[derive(Debug, Error)]
 pub enum ConfigError {
@@ -21,26 +19,24 @@ pub enum ConfigError {
 	InitConfig,
 
 	#[error("Failed to save albumctl config")]
-	SaveConfig
+	SaveConfig,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ConfigManifest {
-	default_library: Option<PathBuf>
+	default_library: Option<PathBuf>,
 }
 
 #[derive(Debug)]
 pub struct Config {
-	manifest: ConfigManifest
+	manifest: ConfigManifest,
 }
 
 impl Config {
 	pub fn init() -> Result<Config, ConfigError> {
-		let paths = Paths::new()
-			.change_context(ConfigError::InitConfig)?;
+		let paths = Paths::new().change_context(ConfigError::InitConfig)?;
 
-		ensure_dir(&paths.config_dir)
-			.change_context(ConfigError::InitConfig)?;
+		ensure_dir(&paths.config_dir).change_context(ConfigError::InitConfig)?;
 
 		ensure_file_with_content(&paths.config_manifest, Some(templates::CONFIG))
 			.change_context(ConfigError::InitConfig)?;
@@ -52,8 +48,7 @@ impl Config {
 	}
 
 	pub fn save(&self) -> Result<(), ConfigError> {
-		let paths = Paths::new()
-			.change_context(ConfigError::SaveConfig)?;
+		let paths = Paths::new().change_context(ConfigError::SaveConfig)?;
 
 		save_manifest(&self.manifest, &paths.config_manifest)
 			.change_context(ConfigError::SaveConfig)?;

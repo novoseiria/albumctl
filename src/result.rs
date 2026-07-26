@@ -3,6 +3,4 @@
 
 use error_stack::Report;
 
-
-
 pub type Result<T, E> = std::result::Result<T, Report<E>>;

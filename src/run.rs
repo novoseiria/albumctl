@@ -10,8 +10,6 @@ use crate::config::Config;
 use crate::library::Library;
 use crate::result::Result;
 
-
-
 #[derive(Debug, Error)]
 #[error("albumctl encountered an error")]
 pub struct RunError;
@@ -22,11 +20,11 @@ pub fn run() -> Result<(), RunError> {
 	let mut config = Config::init().change_context(RunError)?;
 
 	match args.command {
-		Command::Init { path, make_default } =>
-			Library::init(&path, make_default, &mut config)
-				.change_context(RunError)?,
+		Command::Init { path, make_default } => {
+			Library::init(&path, make_default, &mut config).change_context(RunError)?
+		}
 
-		_ => todo!()
+		_ => todo!(),
 	}
 
 	Ok(())

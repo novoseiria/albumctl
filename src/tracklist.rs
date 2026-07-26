@@ -3,14 +3,12 @@
 
 use serde::Deserialize;
 
-
-
 #[derive(Debug, Deserialize)]
 pub struct Disc {
-	tracks: Vec<Track>
+	tracks: Vec<Track>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct Track {
-	title: String
+	title: String,
 }

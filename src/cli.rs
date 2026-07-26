@@ -5,13 +5,11 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
-
-
 #[derive(Debug, Parser)]
 #[command(version, about)]
 pub struct Cli {
 	#[command(subcommand)]
-	pub command: Command
+	pub command: Command,
 }
 
 #[derive(Debug, Subcommand)]
@@ -20,30 +18,30 @@ pub enum Command {
 		path: PathBuf,
 
 		#[arg(short = 'd', long)]
-		make_default: bool
+		make_default: bool,
 	},
 	Album {
 		#[command(subcommand)]
-		command: AlbumCommand
+		command: AlbumCommand,
 	},
 	Release {
 		#[command(subcommand)]
-		command: ReleaseCommand
-	}
+		command: ReleaseCommand,
+	},
 }
 
 #[derive(Debug, Subcommand)]
 pub enum AlbumCommand {
 	Add {
 		path: PathBuf,
-		library: Option<PathBuf>
-	}
+		library: Option<PathBuf>,
+	},
 }
 
 #[derive(Debug, Subcommand)]
 pub enum ReleaseCommand {
 	Add {
 		path: PathBuf,
-		library: Option<PathBuf>
-	}
+		library: Option<PathBuf>,
+	},
 }
