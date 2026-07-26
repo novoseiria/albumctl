@@ -8,7 +8,7 @@ use serde::Deserialize;
 use thiserror::Error;
 
 use crate::config::Config;
-use crate::filesystem::{ensure_empty_dir, ensure_file, ensure_file_with_content};
+use crate::filesystem::{ensure_empty_dir, ensure_file_with_content};
 use crate::result::Result;
 use crate::templates;
 

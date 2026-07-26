@@ -7,7 +7,7 @@ use error_stack::ResultExt;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::filesystem::{ensure_dir, ensure_file, ensure_file_with_content};
+use crate::filesystem::{ensure_dir, ensure_file_with_content};
 use crate::manifest::{load_manifest, save_manifest};
 use crate::result::Result;
 use crate::paths::Paths;
