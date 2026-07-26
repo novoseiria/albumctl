@@ -19,7 +19,7 @@ pub struct RunError;
 pub fn run() -> Result<(), RunError> {
 	let args = Cli::parse();
 
-	let mut config = Config::new().change_context(RunError)?;
+	let mut config = Config::init().change_context(RunError)?;
 
 	match args.command {
 		Command::Init { path, make_default } =>

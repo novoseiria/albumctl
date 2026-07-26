@@ -18,7 +18,7 @@ use crate::templates;
 #[derive(Debug, Error)]
 pub enum ConfigError {
 	#[error("Failed to open albumctl config")]
-	OpenConfig,
+	InitConfig,
 
 	#[error("Failed to save albumctl config")]
 	SaveConfig
@@ -35,18 +35,18 @@ pub struct Config {
 }
 
 impl Config {
-	pub fn new() -> Result<Config, ConfigError> {
+	pub fn init() -> Result<Config, ConfigError> {
 		let paths = Paths::new()
-			.change_context(ConfigError::OpenConfig)?;
+			.change_context(ConfigError::InitConfig)?;
 
 		ensure_dir(&paths.config_dir)
-			.change_context(ConfigError::OpenConfig)?;
+			.change_context(ConfigError::InitConfig)?;
 
 		ensure_file_with_content(&paths.config_manifest, Some(templates::CONFIG))
-			.change_context(ConfigError::OpenConfig)?;
+			.change_context(ConfigError::InitConfig)?;
 
 		let manifest = load_manifest::<ConfigManifest>(&paths.config_manifest)
-			.change_context(ConfigError::OpenConfig)?;
+			.change_context(ConfigError::InitConfig)?;
 
 		Ok(Config { manifest })
 	}
